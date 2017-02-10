@@ -15,17 +15,11 @@
         android:id="@+id/titleField">
         <TextView
             android:text="Title"
-            android:textSize="20dp"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/FieldTextView"
             android:id="@+id/txtTitle" />
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text=""
+            style="@style/FieldEditView"
             android:id="@+id/edtTitle" />
     </LinearLayout>
 
@@ -35,17 +29,11 @@
         android:id="@+id/authorField">
         <TextView
             android:text="Author"
-            android:textSize="20dp"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/FieldTextView"
             android:id="@+id/txtAuthor" />
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text=""
+            style="@style/FieldEditView"
             android:id="@+id/edtAuthor" />
     </LinearLayout>
 
@@ -55,17 +43,11 @@
         android:id="@+id/publisherField">
         <TextView
             android:text="Publisher"
-            android:textSize="20dp"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/FieldTextView"
             android:id="@+id/txtPublisher" />
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text=""
+            style="@style/FieldEditView"
             android:id="@+id/edtPublisher" />
     </LinearLayout>
 
@@ -75,17 +57,11 @@
         android:id="@+id/publishYearField">
         <TextView
             android:text="Publish Year"
-            android:textSize="20dp"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/FieldTextView"
             android:id="@+id/txtYear" />
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text=""
+            style="@style/FieldEditView"
             android:id="@+id/edtYear" />
     </LinearLayout>
 
@@ -95,17 +71,11 @@
         android:id="@+id/editionField">
         <TextView
             android:text="Edition"
-            android:textSize="20dp"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/FieldTextView"
             android:id="@+id/txtEdition" />
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text=""
+            style="@style/FieldEditView"
             android:id="@+id/edtEdition" />
     </LinearLayout>
 
@@ -115,17 +85,11 @@
         android:id="@+id/ISBNField">
         <TextView
             android:text="ISBN"
-            android:textSize="20dp"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/FieldTextView"
             android:id="@+id/txtISBN" />
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text=""
+            style="@style/FieldEditView"
             android:id="@+id/edtISBN" />
     </LinearLayout>
 
