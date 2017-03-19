@@ -23,7 +23,7 @@ public class AddBookText extends AppCompatActivity {
 
         Button b = (Button) findViewById(R.id.btnAdd);
 
-        final ShelfOpenHelper db = new ShelfOpenHelper(this);
+        final OpenHelper db = new OpenHelper(this);
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +31,9 @@ public class AddBookText extends AppCompatActivity {
                 Intent i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
 
                 setEditTexts();
+
+                String table = getIntent().getStringExtra("TableName");
+                db.setTABLE_NAME(table);
 
                 Book b = new Book(db.getLastID()+1, title.getText().toString(), author.getText().toString(), publisher.getText().toString(),
                         Integer.parseInt(publishYear.getText().toString()), edition.getText().toString(), Integer.parseInt(ISBN.getText().toString()));

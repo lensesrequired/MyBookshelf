@@ -2,11 +2,7 @@ package edu.coe.asmarek.mybookshelf;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.accessibility.AccessibilityManagerCompat;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,21 +11,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Shelf extends AppCompatActivity {
+/**
+ * Created by Anna on 3/18/17.
+ */
+
+public class BookListViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private ListView list;
     private ArrayList<Book> books;
     private BookAdapter adapter;
-    final private ShelfOpenHelper db = new ShelfOpenHelper(this);
+    private String tableName;
 
-    @Override
+    final private OpenHelper db = new OpenHelper(this);
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -41,6 +41,7 @@ public class Shelf extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent("edu.coe.asmarek.mybookshelf.AddBookText");
+                i.putExtra("TableName", tableName);
                 startActivity(i);
             }
         });
@@ -60,8 +61,12 @@ public class Shelf extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.myShelf) {
+                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
+                    startActivity(i);
 
                 } else if (id == R.id.myWishlist) {
+                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.Wishlist");
+                    startActivity(i);
 
                 } else if (id == R.id.nav_share) {
 
@@ -75,11 +80,17 @@ public class Shelf extends AppCompatActivity {
             }
         });
 
+        db.setTABLE_NAME(tableName);
+
         list = (ListView) findViewById(R.id.ownedBookList);
         books = new ArrayList<Book>();
         books = db.getAllBooks();
         adapter = new BookAdapter(this, books);
         list.setAdapter(adapter);
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     @Override
@@ -112,5 +123,10 @@ public class Shelf extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 }

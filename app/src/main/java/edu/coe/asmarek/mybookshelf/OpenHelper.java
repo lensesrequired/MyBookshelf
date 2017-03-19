@@ -13,13 +13,24 @@ import java.util.ArrayList;
  * Created by Anna on 3/18/17.
  */
 
-public class ShelfOpenHelper extends SQLiteOpenHelper {
+public class OpenHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "MyBookShelf";
-    private static final String TABLE_NAME = "shelf";
-    private static final String TABLE_CREATE =
-            "CREATE TABLE " + TABLE_NAME + " (" +
+    private String TABLE_NAME;
+    private String SHELF_TABLE_NAME = "shelf";
+    private String WISHLIST_TABLE_NAME = "wishlist";
+    private String SHELF_TABLE_CREATE =
+            "CREATE TABLE " + SHELF_TABLE_NAME + " (" +
+                    "ID" + " INTEGER, " +
+                    "Title" + " TEXT, " +
+                    "Author" + " TEXT, " +
+                    "Publisher" + " TEXT, " +
+                    "Year" + " INTEGER, " +
+                    "Edition" + " TEXT, " +
+                    "ISBN" + " INTEGER);";
+    private String WISHLIST_TABLE_CREATE =
+            "CREATE TABLE " + WISHLIST_TABLE_NAME + " (" +
                     "ID" + " INTEGER, " +
                     "Title" + " TEXT, " +
                     "Author" + " TEXT, " +
@@ -28,13 +39,18 @@ public class ShelfOpenHelper extends SQLiteOpenHelper {
                     "Edition" + " TEXT, " +
                     "ISBN" + " INTEGER);";
 
-    ShelfOpenHelper(Context context) {
+    OpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public void setTABLE_NAME(String t) {
+        TABLE_NAME = t;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_CREATE);
+        db.execSQL(SHELF_TABLE_CREATE);
+        db.execSQL(WISHLIST_TABLE_CREATE);
     }
 
     @Override
