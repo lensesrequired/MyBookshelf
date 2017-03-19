@@ -15,17 +15,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class Shelf extends AppCompatActivity {
 
     private ListView list;
     private ArrayList<Book> books;
     private BookAdapter adapter;
+    final private ShelfOpenHelper db = new ShelfOpenHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent("edu.coe.asmarek.mybookshelf.AddBookText");
-                startActivityForResult(i, 1);
+                startActivity(i);
             }
         });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        //drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -57,13 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 // Handle navigation view item clicks here.
                 int id = item.getItemId();
 
-                if (id == R.id.nav_camera) {
-                    // Handle the camera action
-                } else if (id == R.id.nav_gallery) {
+                if (id == R.id.myShelf) {
 
-                } else if (id == R.id.nav_slideshow) {
-
-                } else if (id == R.id.nav_manage) {
+                } else if (id == R.id.myWishlist) {
 
                 } else if (id == R.id.nav_share) {
 
@@ -79,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         list = (ListView) findViewById(R.id.ownedBookList);
         books = new ArrayList<Book>();
+        books = db.getAllBooks();
         adapter = new BookAdapter(this, books);
         list.setAdapter(adapter);
     }
@@ -113,16 +112,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent response) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                Book newBook = new Book(response.getStringArrayExtra("BookInfo")[0], response.getStringArrayExtra("BookInfo")[1]);
-                books.add(newBook);
-                adapter.notifyDataSetChanged();
-                Toast.makeText(this, response.getStringArrayExtra("BookInfo")[0], Toast.LENGTH_LONG).show();
-            }
-        }
     }
 }

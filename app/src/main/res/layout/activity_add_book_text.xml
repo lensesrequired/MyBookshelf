@@ -20,6 +20,7 @@
 
         <EditText
             style="@style/FieldEditView"
+            android:inputType="textCapWords"
             android:id="@+id/edtTitle" />
     </LinearLayout>
 
@@ -34,6 +35,7 @@
 
         <EditText
             style="@style/FieldEditView"
+            android:inputType="textCapWords"
             android:id="@+id/edtAuthor" />
     </LinearLayout>
 
@@ -48,6 +50,7 @@
 
         <EditText
             style="@style/FieldEditView"
+            android:inputType="textCapWords"
             android:id="@+id/edtPublisher" />
     </LinearLayout>
 
@@ -62,6 +65,7 @@
 
         <EditText
             style="@style/FieldEditView"
+            android:inputType="number"
             android:id="@+id/edtYear" />
     </LinearLayout>
 
@@ -90,6 +94,7 @@
 
         <EditText
             style="@style/FieldEditView"
+            android:inputType="number"
             android:id="@+id/edtISBN" />
     </LinearLayout>
 

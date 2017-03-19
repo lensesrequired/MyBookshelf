@@ -1,6 +1,7 @@
 package edu.coe.asmarek.mybookshelf;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,21 +23,21 @@ public class AddBookText extends AppCompatActivity {
 
         Button b = (Button) findViewById(R.id.btnAdd);
 
+        final ShelfOpenHelper db = new ShelfOpenHelper(this);
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent();
+                Intent i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
 
                 setEditTexts();
 
-                String[] data = {title.getText().toString(), author.getText().toString(), publisher.getText().toString(), publishYear.getText().toString(), edition.getText().toString(), ISBN.getText().toString()};
+                Book b = new Book(db.getLastID()+1, title.getText().toString(), author.getText().toString(), publisher.getText().toString(),
+                        Integer.parseInt(publishYear.getText().toString()), edition.getText().toString(), Integer.parseInt(ISBN.getText().toString()));
+                db.addBook(b);
 
-                i.putExtra("BookInfo", data);
-                setResult(RESULT_OK, i);
-                finish();
+                startActivity(i);
             }
-
-
         });
     }
 
