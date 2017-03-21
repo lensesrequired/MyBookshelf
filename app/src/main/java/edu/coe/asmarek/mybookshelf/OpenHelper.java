@@ -28,7 +28,7 @@ public class OpenHelper extends SQLiteOpenHelper {
                     "Publisher" + " TEXT, " +
                     "Year" + " INTEGER, " +
                     "Edition" + " TEXT, " +
-                    "ISBN" + " INTEGER);";
+                    "ISBN" + " TEXT);";
     private String WISHLIST_TABLE_CREATE =
             "CREATE TABLE " + WISHLIST_TABLE_NAME + " (" +
                     "ID" + " INTEGER, " +
@@ -37,7 +37,7 @@ public class OpenHelper extends SQLiteOpenHelper {
                     "Publisher" + " TEXT, " +
                     "Year" + " INTEGER, " +
                     "Edition" + " TEXT, " +
-                    "ISBN" + " INTEGER);";
+                    "ISBN" + " TEXT);";
 
     OpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -104,7 +104,7 @@ public class OpenHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         Book book = new Book(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),
-                Integer.parseInt(cursor.getString(4)), cursor.getString(5), Integer.parseInt(cursor.getString(6)));
+                Integer.parseInt(cursor.getString(4)), cursor.getString(5), (cursor.getString(6)));
 
         return book;
     }
@@ -128,7 +128,7 @@ public class OpenHelper extends SQLiteOpenHelper {
                 b.setBookPublisher(cursor.getString(3));
                 b.setBookPublishYear(Integer.parseInt(cursor.getString(4)));
                 b.setBookEdition(cursor.getString(5));
-                b.setBookISBN(Integer.parseInt(cursor.getString(6)));
+                b.setBookISBN((cursor.getString(6)));
                 // Adding contact to list
                 booklist.add(b);
             } while (cursor.moveToNext());

@@ -31,6 +31,8 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         bookTitle.setText("Title: " + book.getBookTitle());
         bookAuthor.setText("Author: " + book.getBookAuthor());
+        bookTitle.setTextSize(18);
+        bookAuthor.setTextSize(16);
 
         return convertView;
     }

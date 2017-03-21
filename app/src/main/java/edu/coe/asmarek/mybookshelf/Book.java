@@ -11,7 +11,7 @@ public class Book {
     private String bookPublisher;
     private Integer bookPublishYear;
     private String bookEdition;
-    private Integer bookISBN;
+    private String bookISBN;
 
     public Book() {
         this.bookID = 0;
@@ -20,10 +20,10 @@ public class Book {
         this.bookPublisher = "";
         this.bookPublishYear = 0;
         this.bookEdition = "";
-        this.bookISBN = 0;
+        this.bookISBN = "";
     }
 
-    public Book(int bookID, String bookTitle, String bookAuthor, String bookPublisher, Integer bookPublishYear, String bookEdition, Integer bookISBN) {
+    public Book(int bookID, String bookTitle, String bookAuthor, String bookPublisher, Integer bookPublishYear, String bookEdition, String bookISBN) {
         this.bookID = bookID;
         this.bookTitle = bookTitle;
         this.bookAuthor = bookAuthor;
@@ -81,11 +81,11 @@ public class Book {
         this.bookEdition = bookEdition;
     }
 
-    public Integer getBookISBN() {
+    public String getBookISBN() {
         return bookISBN;
     }
 
-    public void setBookISBN(Integer bookISBN) {
+    public void setBookISBN(String bookISBN) {
         this.bookISBN = bookISBN;
     }
 }

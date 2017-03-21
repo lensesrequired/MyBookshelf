@@ -1,50 +1,43 @@
 package edu.coe.asmarek.mybookshelf;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import java.util.ArrayList;
+public class BookDetails extends AppCompatActivity implements View.OnClickListener {
 
-/**
- * Created by Anna on 3/18/17.
- */
+    TextView title;
+    TextView author;
+    TextView publisher;
+    TextView publishYear;
+    TextView edition;
+    TextView ISBN;
+    Button lookup;
+    Button delete;
 
-public class BookListViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
-    private ListView list;
-    private ArrayList<Book> books;
-    private BookAdapter adapter;
-    private String tableName;
+    Book b;
 
     final private OpenHelper db = new OpenHelper(this);
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_book_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent("edu.coe.asmarek.mybookshelf.AddBookText");
-                i.putExtra("TableName", tableName);
-                startActivity(i);
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -80,19 +73,7 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
             }
         });
 
-        db.setTABLE_NAME(tableName);
-
-        list = (ListView) findViewById(R.id.ownedBookList);
-        books = new ArrayList<Book>();
-        books = db.getAllBooks();
-        adapter = new BookAdapter(this, books);
-        list.setAdapter(adapter);
-
-        list.setOnItemClickListener(this);
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+        setControls();
     }
 
     @Override
@@ -127,12 +108,61 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
         return super.onOptionsItemSelected(item);
     }
 
+    private void setControls() {
+        title = (TextView) findViewById(R.id.txtTitle);
+        author = (TextView) findViewById(R.id.txtAuthor);
+        publisher = (TextView) findViewById(R.id.txtPublisher);
+        publishYear = (TextView) findViewById(R.id.txtYear);
+        edition = (TextView) findViewById(R.id.txtEdition);
+        ISBN = (TextView) findViewById(R.id.txtISBN);
+
+        db.setTABLE_NAME(getIntent().getStringExtra("Table"));
+        b = db.getBook(getIntent().getIntExtra("ID", 0));
+
+        String pub = b.getBookPublishYear().toString();
+        String isbn = b.getBookISBN().toString();
+
+        title.setText(b.getBookTitle());
+        author.setText(b.getBookAuthor());
+        publisher.setText(b.getBookPublisher());
+        if (!pub.matches("0")) {
+            publishYear.setText(b.getBookPublishYear().toString());
+        } else {
+            publishYear.setText("");
+        }
+        edition.setText(b.getBookEdition());
+        if (!isbn.matches("0")) {
+            ISBN.setText(b.getBookISBN().toString());
+        } else {
+            ISBN.setText("");
+        }
+
+        lookup = (Button) findViewById(R.id.btnLookUp);
+        lookup.setOnClickListener(this);
+
+        delete = (Button) findViewById(R.id.btnDelete);
+        delete.setOnClickListener(this);
+    }
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Book b = (Book) parent.getItemAtPosition(position);
-        Intent i = new Intent("edu.coe.asmarek.mybookshelf.BookDetails");
-        i.putExtra("ID", b.getBookID());
-        i.putExtra("Table", tableName);
-        startActivity(i);
+    public void onClick(View v) {
+        Intent i;
+        switch (v.getId()) {
+            case R.id.btnLookUp:
+                String query;
+                if (ISBN.getText().toString().matches("")) {
+                    query = b.getBookTitle() + " " + b.getBookAuthor();
+                } else {
+                    query = b.getBookISBN().toString();
+                }
+                i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com/#q=" + query));
+                startActivity(i);
+                break;
+            case R.id.btnDelete:
+                db.deleteBook(b);
+                i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
+                startActivity(i);
+                break;
+        }
     }
 }
