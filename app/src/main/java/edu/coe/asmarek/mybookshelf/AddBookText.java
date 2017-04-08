@@ -21,10 +21,24 @@ public class AddBookText extends AppCompatActivity {
 
     final OpenHelper db = new OpenHelper(this);
 
+    String tableName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book_text);
+
+        tableName = getIntent().getStringExtra("TableName");
+
+        Toast.makeText(this, tableName, Toast.LENGTH_SHORT).show();
+
+        if(tableName.matches("shelf")) {
+            setTitle("Add Book to Shelf");
+        } else if(tableName.matches("wishlist")) {
+            setTitle("Add Book to Wishlist");
+        } else {
+            setTitle("None");
+        }
 
         Button b = (Button) findViewById(R.id.btnAdd);
 
@@ -36,7 +50,7 @@ public class AddBookText extends AppCompatActivity {
                 if (!title.getText().toString().matches("") && !author.getText().toString().matches("")) {
                     Intent i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
 
-                    String table = getIntent().getStringExtra("TableName");
+                    String table = tableName;
                     db.setTABLE_NAME(table);
 
                     String pub = publisher.getText().toString();

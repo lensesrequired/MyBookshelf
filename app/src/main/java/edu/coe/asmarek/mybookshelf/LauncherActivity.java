@@ -14,4 +14,15 @@ public class LauncherActivity extends AppCompatActivity {
         Intent i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
         startActivity(i);
     }
+
+    /*@Override
+    protected void onRestart() {
+        super.onResume();
+        setContentView(R.layout.activity_launcher);
+
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+    }*/
 }
