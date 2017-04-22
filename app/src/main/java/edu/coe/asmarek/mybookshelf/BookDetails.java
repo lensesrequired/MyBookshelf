@@ -27,6 +27,7 @@ public class BookDetails extends AppCompatActivity implements View.OnClickListen
     TextView ISBN;
     Button lookup;
     Button delete;
+    Button edit;
 
     Book b;
 
@@ -54,13 +55,17 @@ public class BookDetails extends AppCompatActivity implements View.OnClickListen
                 int id = item.getItemId();
 
                 if (id == R.id.myShelf) {
-                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
+                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.BookListViewActivity");
+                    i.putExtra("shelfName", "MyShelf");
                     startActivity(i);
-
                 } else if (id == R.id.myWishlist) {
-                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.Wishlist");
+                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.BookListViewActivity");
+                    i.putExtra("shelfName", "Wishlist");
                     startActivity(i);
-
+                } else if (id == R.id.myLoans) {
+                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.BookListViewActivity");
+                    i.putExtra("shelfName", "Loans");
+                    startActivity(i);
                 } else if (id == R.id.nav_share) {
 
                 } else if (id == R.id.nav_send) {
@@ -116,7 +121,6 @@ public class BookDetails extends AppCompatActivity implements View.OnClickListen
         edition = (TextView) findViewById(R.id.txtEdition);
         ISBN = (TextView) findViewById(R.id.txtISBN);
 
-        db.setTABLE_NAME(getIntent().getStringExtra("Table"));
         b = db.getBook(getIntent().getIntExtra("ID", 0));
 
         String pub = b.getBookPublishYear().toString();
@@ -142,6 +146,9 @@ public class BookDetails extends AppCompatActivity implements View.OnClickListen
 
         delete = (Button) findViewById(R.id.btnDelete);
         delete.setOnClickListener(this);
+
+        edit = (Button) findViewById(R.id.btnEdit);
+        edit.setOnClickListener(this);
     }
 
     @Override
@@ -160,7 +167,13 @@ public class BookDetails extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.btnDelete:
                 db.deleteBook(b);
-                i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
+                i = new Intent("edu.coe.asmarek.mybookshelf.BookListViewActivity");
+                i.putExtra("shelfName", b.getBookShelf());
+                startActivity(i);
+                break;
+            case R.id.btnEdit:
+                i = new Intent("edu.coe.asmarek.mybookshelf.AddBookText");
+                i.putExtra("bookID", b.getBookID());
                 startActivity(i);
                 break;
         }

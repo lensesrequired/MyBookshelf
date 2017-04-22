@@ -10,6 +10,10 @@
             android:id="@+id/myWishlist"
             android:icon="@android:drawable/btn_star_big_off"
             android:title="Wishlist" />
+        <item
+            android:id="@+id/myLoans"
+            android:icon="@android:drawable/btn_star_big_off"
+            android:title="Books Out on Loan" />
     </group>
 
     <item android:title="Communicate">

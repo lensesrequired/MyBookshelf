@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
     private ListView list;
     private ArrayList<Book> books;
     private BookAdapter adapter;
-    private String tableName;
+    private String shelfName;
 
     final private OpenHelper db = new OpenHelper(this);
 
@@ -36,12 +37,14 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        shelfName = getIntent().getStringExtra("shelfName");
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent("edu.coe.asmarek.mybookshelf.AddBookText");
-                i.putExtra("TableName", tableName);
+                i.putExtra("shelfName", shelfName);
                 startActivity(i);
             }
         });
@@ -61,13 +64,17 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
                 int id = item.getItemId();
 
                 if (id == R.id.myShelf) {
-                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.Shelf");
+                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.BookListViewActivity");
+                    i.putExtra("shelfName", "MyShelf");
                     startActivity(i);
-
                 } else if (id == R.id.myWishlist) {
-                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.Wishlist");
+                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.BookListViewActivity");
+                    i.putExtra("shelfName", "Wishlist");
                     startActivity(i);
-
+                } else if (id == R.id.myLoans) {
+                    Intent i = new Intent("edu.coe.asmarek.mybookshelf.BookListViewActivity");
+                    i.putExtra("shelfName", "Loans");
+                    startActivity(i);
                 } else if (id == R.id.nav_share) {
 
                 } else if (id == R.id.nav_send) {
@@ -80,19 +87,13 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
             }
         });
 
-        db.setTABLE_NAME(tableName);
-
         list = (ListView) findViewById(R.id.ownedBookList);
         books = new ArrayList<Book>();
-        books = db.getAllBooks();
+        books = db.getAllBooksOnShelf(shelfName);
         adapter = new BookAdapter(this, books);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(this);
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
     }
 
     @Override
@@ -132,7 +133,7 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
         Book b = (Book) parent.getItemAtPosition(position);
         Intent i = new Intent("edu.coe.asmarek.mybookshelf.BookDetails");
         i.putExtra("ID", b.getBookID());
-        i.putExtra("Table", tableName);
+        i.putExtra("shelfName", shelfName);
         startActivity(i);
     }
 }

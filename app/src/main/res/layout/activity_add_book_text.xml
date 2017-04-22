@@ -103,7 +103,22 @@
 
         <LinearLayout
             style="@style/FieldsLayout"
-            android:layout_below="@id/ISBNField">
+            android:layout_below="@id/ISBNField"
+            android:id="@+id/ShelfField">
+            <TextView
+                android:text="Shelf"
+                style="@style/FieldTextView"
+                android:id="@+id/txtShelf" />
+
+            <Spinner
+                style="@style/FieldEditView"
+                android:id="@+id/spnShelves"
+                android:entries="@array/shelves"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/FieldsLayout"
+            android:layout_below="@id/ShelfField">
             <Button
                 android:text="Add To Shelf"
                 android:textSize="20dp"
