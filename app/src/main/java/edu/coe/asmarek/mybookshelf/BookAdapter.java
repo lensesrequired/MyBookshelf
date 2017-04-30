@@ -1,12 +1,16 @@
 package edu.coe.asmarek.mybookshelf;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +30,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_book, parent, false);
         }
 
+        ImageView bookPic = (ImageView) convertView.findViewById(R.id.imgBook);
         TextView bookTitle = (TextView) convertView.findViewById(R.id.bookTitle);
         TextView bookAuthor = (TextView) convertView.findViewById(R.id.bookAuthor);
 
@@ -33,6 +38,13 @@ public class BookAdapter extends ArrayAdapter<Book> {
         bookAuthor.setText("Author: " + book.getBookAuthor());
         bookTitle.setTextSize(18);
         bookAuthor.setTextSize(16);
+
+        try {
+            InputStream is = (InputStream) new URL(book.getBookImageURL()).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            bookPic.setImageDrawable(d);
+        } catch (Exception e) {
+        }
 
         return convertView;
     }

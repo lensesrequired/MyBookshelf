@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 public class OpenHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 3;
-    private static final String DATABASE_NAME = "MyBookShelf1";
+    private static final String DATABASE_NAME = "MyBookShelf2";
     private String BOOKS_TABLE_NAME = "books";
     private String SHELVES_TABLE_NAME = "shelves";
     private String BOOKS_TABLE_CREATE =
@@ -29,6 +30,7 @@ public class OpenHelper extends SQLiteOpenHelper {
                     "Year" + " INTEGER, " +
                     "Edition" + " TEXT, " +
                     "ISBN" + " TEXT, " +
+                    "ImageURL" + " TEXT, " +
                     "Shelf" + " TEXT);";
     private String SHELVES_TABLE_CREATE =
             "CREATE TABLE " + SHELVES_TABLE_NAME + " (" +
@@ -64,6 +66,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         values.put("Year", book.getBookPublishYear());
         values.put("Edition", book.getBookEdition());
         values.put("ISBN", book.getBookISBN());
+        values.put("ImageURL", book.getBookImageURL());
         values.put("Shelf", book.getBookShelf());
 
         // Inserting Row
@@ -92,13 +95,13 @@ public class OpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(BOOKS_TABLE_NAME, new String[] { "ID",
-                        "Title", "Author", "Publisher", "Year", "Edition", "ISBN", "Shelf" }, "ID" + "=?",
+                        "Title", "Author", "Publisher", "Year", "Edition", "ISBN", "ImageURL", "Shelf" }, "ID" + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         Book book = new Book(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),
-                Integer.parseInt(cursor.getString(4)), cursor.getString(5), (cursor.getString(6)), cursor.getString(7));
+                Integer.parseInt(cursor.getString(4)), cursor.getString(5), (cursor.getString(6)), cursor.getString(7), cursor.getString(8));
 
         return book;
     }
@@ -123,7 +126,8 @@ public class OpenHelper extends SQLiteOpenHelper {
                 b.setBookPublishYear(Integer.parseInt(cursor.getString(4)));
                 b.setBookEdition(cursor.getString(5));
                 b.setBookISBN((cursor.getString(6)));
-                b.setBookShelf(cursor.getString(7));
+                b.setBookImageURL(cursor.getString(7));
+                b.setBookShelf(cursor.getString(8));
                 // Adding contact to list
                 booklist.add(b);
             } while (cursor.moveToNext());
@@ -144,7 +148,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                if(shelfName.equals(cursor.getString(7))) {
+                if(shelfName.equals(cursor.getString(8))) {
                     Book b = new Book();
                     b.setBookID(cursor.getInt(0));
                     b.setBookTitle(cursor.getString(1));
@@ -153,7 +157,8 @@ public class OpenHelper extends SQLiteOpenHelper {
                     b.setBookPublishYear(Integer.parseInt(cursor.getString(4)));
                     b.setBookEdition(cursor.getString(5));
                     b.setBookISBN((cursor.getString(6)));
-                    b.setBookShelf(cursor.getString(7));
+                    b.setBookImageURL(cursor.getString(7));
+                    b.setBookShelf(cursor.getString(8));
                     // Adding contact to list
                     booklist.add(b);
                 }
@@ -176,6 +181,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         values.put("Year", book.getBookPublishYear());
         values.put("Edition", book.getBookEdition());
         values.put("ISBN", book.getBookISBN());
+        values.put("ImageURL", book.getBookImageURL());
         values.put("Shelf", book.getBookShelf());
 
         // updating row
@@ -197,10 +203,11 @@ public class OpenHelper extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + BOOKS_TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
         cursor.close();
 
         // return count
-        return cursor.getCount();
+        return count;
     }
 
     public void addShelf(String shelfName) {

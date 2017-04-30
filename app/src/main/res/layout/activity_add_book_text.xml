@@ -13,8 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/btnScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan Barcode"/>
+
+        <edu.coe.asmarek.mybookshelf.BookCover
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/btnScan"
+            android:id="@+id/imgBookCover" >
+        </edu.coe.asmarek.mybookshelf.BookCover>
+
         <LinearLayout
             style="@style/FieldsLayout"
+            android:layout_below="@+id/imgBookCover"
             android:id="@+id/titleField">
             <TextView
                 android:text="Title"

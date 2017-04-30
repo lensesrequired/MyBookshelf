@@ -12,6 +12,7 @@ public class Book {
     private Integer bookPublishYear;
     private String bookEdition;
     private String bookISBN;
+    private String bookImageURL;
     private String bookShelf;
 
     public Book() {
@@ -22,11 +23,12 @@ public class Book {
         this.bookPublishYear = 0;
         this.bookEdition = "";
         this.bookISBN = "";
+        this.bookImageURL = "";
         this.bookShelf = "";
     }
 
     public Book(int bookID, String bookTitle, String bookAuthor, String bookPublisher,
-                Integer bookPublishYear, String bookEdition, String bookISBN,
+                Integer bookPublishYear, String bookEdition, String bookISBN, String bookImage,
                 String bookShelf) {
         this.bookID = bookID;
         this.bookTitle = bookTitle;
@@ -35,6 +37,7 @@ public class Book {
         this.bookPublishYear = bookPublishYear;
         this.bookEdition = bookEdition;
         this.bookISBN = bookISBN;
+        this.bookImageURL = bookImage;
         this.bookShelf = bookShelf;
     }
 
@@ -92,6 +95,14 @@ public class Book {
 
     public void setBookISBN(String bookISBN) {
         this.bookISBN = bookISBN;
+    }
+
+    public String getBookImageURL() {
+        return bookImageURL;
+    }
+
+    public void setBookImageURL(String bookImageURL) {
+        this.bookImageURL = bookImageURL;
     }
 
     public String getBookShelf() {
