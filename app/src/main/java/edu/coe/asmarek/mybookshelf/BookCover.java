@@ -1,17 +1,20 @@
 package edu.coe.asmarek.mybookshelf;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
-import java.io.InputStream;
-import java.net.URL;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import java.io.ByteArrayInputStream;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by Anna on 4/29/17.
@@ -53,11 +56,21 @@ public class BookCover extends LinearLayout {
     }
 
     public void LoadImageFromWebOperations() {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            img.setImageDrawable(d);
-        } catch (Exception e) {
+        if(!url.equals(null)) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(url, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    ByteArrayInputStream bis = new ByteArrayInputStream(responseBody);
+                    Bitmap photoBitmap = BitmapFactory.decodeStream(bis);
+                    img.setImageBitmap(photoBitmap);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                }
+            });
         }
     }
 }

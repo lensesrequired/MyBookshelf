@@ -16,9 +16,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imgBookCoverDetailsPage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
 
         <LinearLayout
             style="@style/FieldsLayout"
+            android:layout_below="@+id/imgBookCoverDetailsPage"
             android:id="@+id/titleField">
             <TextView
                 android:text="Title"

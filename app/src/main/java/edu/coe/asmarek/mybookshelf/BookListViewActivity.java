@@ -14,21 +14,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Anna on 3/18/17.
  */
 
-public class BookListViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class BookListViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     private ListView list;
     private ArrayList<Book> books;
-    private BookAdapter adapter;
+    private ArrayList<String> attr;
+    private BookAdapter bookAdapter;
+    private ArrayAdapter sortAdapter;
     private String shelfName;
+    private Spinner sort;
 
     final private OpenHelper db = new OpenHelper(this);
 
@@ -90,11 +98,17 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
             }
         });
 
+        sort = (Spinner) findViewById(R.id.spnSort);
+        attr = new ArrayList<String>();
+        attr.add("Title");
+        attr.add("Author");
+        sort.setOnItemSelectedListener(this);
+
         list = (ListView) findViewById(R.id.ownedBookList);
         books = new ArrayList<Book>();
         books = db.getAllBooksOnShelf(shelfName);
-        adapter = new BookAdapter(this, books);
-        list.setAdapter(adapter);
+        bookAdapter = new BookAdapter(this, books);
+        list.setAdapter(bookAdapter);
 
         list.setOnItemClickListener(this);
     }
@@ -138,5 +152,32 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
         i.putExtra("ID", b.getBookID());
         i.putExtra("shelfName", shelfName);
         startActivity(i);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (attr.get(position)) {
+            case "Title":
+                Collections.sort(books, new Comparator<Book>() {
+                    public int compare(Book b1, Book b2) {
+                        return b1.getBookTitle().compareTo(b2.getBookTitle());
+                    }
+                });
+                bookAdapter.notifyDataSetChanged();
+                break;
+            case "Author":
+                Collections.sort(books, new Comparator<Book>() {
+                    public int compare(Book b1, Book b2) {
+                        return b1.getBookAuthor().compareTo(b2.getBookAuthor());
+                    }
+                });
+                bookAdapter.notifyDataSetChanged();
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

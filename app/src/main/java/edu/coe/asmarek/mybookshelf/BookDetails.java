@@ -1,6 +1,8 @@
 package edu.coe.asmarek.mybookshelf;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,10 +17,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import java.io.ByteArrayInputStream;
+
+import cz.msebera.android.httpclient.Header;
 
 public class BookDetails extends AppCompatActivity implements View.OnClickListener {
 
+    ImageView photo;
     TextView title;
     TextView author;
     TextView publisher;
@@ -114,6 +125,7 @@ public class BookDetails extends AppCompatActivity implements View.OnClickListen
     }
 
     private void setControls() {
+        photo = (ImageView) findViewById(R.id.imgBookCoverDetailsPage);
         title = (TextView) findViewById(R.id.txtTitle);
         author = (TextView) findViewById(R.id.txtAuthor);
         publisher = (TextView) findViewById(R.id.txtPublisher);
@@ -126,6 +138,7 @@ public class BookDetails extends AppCompatActivity implements View.OnClickListen
         String pub = b.getBookPublishYear().toString();
         String isbn = b.getBookISBN().toString();
 
+        setPhoto(b.getBookImageURL());
         title.setText(b.getBookTitle());
         author.setText(b.getBookAuthor());
         publisher.setText(b.getBookPublisher());
@@ -149,6 +162,25 @@ public class BookDetails extends AppCompatActivity implements View.OnClickListen
 
         edit = (Button) findViewById(R.id.btnEdit);
         edit.setOnClickListener(this);
+    }
+
+    public void setPhoto(String url) {
+        if(!url.equals(null)) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(url, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    ByteArrayInputStream bis = new ByteArrayInputStream(responseBody);
+                    Bitmap photoBitmap = BitmapFactory.decodeStream(bis);
+                    photo.setImageBitmap(photoBitmap);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                }
+            });
+        }
     }
 
     @Override

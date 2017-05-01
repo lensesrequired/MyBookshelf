@@ -51,7 +51,7 @@ public class AddBookText extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book_text);
 
-        setEditTexts();
+        initViews();
 
         shelfName = getIntent().getStringExtra("shelfName");
         editBookID = getIntent().getIntExtra("bookID", -1);
@@ -76,7 +76,7 @@ public class AddBookText extends AppCompatActivity implements View.OnClickListen
         b.setOnClickListener(this);
     }
 
-    private void setEditTexts() {
+    private void initViews() {
         scan = (Button) findViewById(R.id.btnScan);
         title = (EditText) findViewById(R.id.edtTitle);
         author = (EditText) findViewById(R.id.edtAuthor);
@@ -146,37 +146,45 @@ public class AddBookText extends AppCompatActivity implements View.OnClickListen
                     client.get(bookSearchString, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            List<Book> bookList = new ArrayList<Book>();
-
                             String json = new String(responseBody);
 
                             try {
                                 JSONObject object = new JSONObject(json);
                                 JSONArray array = object.getJSONArray("items");
 
-                                for (int i = 0; i < array.length(); i++) {
-                                    Book book = new Book();
-                                    JSONObject item = array.getJSONObject(i);
+                                Book book = new Book();
+                                JSONObject item = array.getJSONObject(0);
 
-                                    JSONObject volumeInfo = item.getJSONObject("volumeInfo");
-                                    String t = volumeInfo.getString("title");
-                                    title.setText(t);
 
+                                JSONObject volumeInfo = item.getJSONObject("volumeInfo");
+                                String t = volumeInfo.getString("title");
+                                title.setText(t);
+
+                                try {
                                     JSONArray authors = volumeInfo.getJSONArray("authors");
                                     String a = authors.getString(0);
                                     author.setText(a);
-
-                                    //String pub = volumeInfo.getString("publisher");
-                                    //publisher.setText(pub);
-
-                                    JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                                    String imageLink = imageLinks.getString("smallThumbnail");
-                                    photo.setURL(imageLink);
-                                    Log.d("Url", "Url" + imageLink);
-                                    photo.LoadImageFromWebOperations();
-
-                                    bookList.add(book);
+                                } catch (JSONException e) {
                                 }
+
+                                try {
+                                    String pub = volumeInfo.getString("publisher");
+                                    publisher.setText(pub);
+                                } catch (JSONException e) {
+                                }
+
+//                                try {
+//                                    String yr = volumeInfo.getString("publishedDate");
+//                                    publishYear.setText(yr);
+//                                } catch (JSONException e) {
+//                                }
+
+                                JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+                                String imageLink = imageLinks.getString("smallThumbnail");
+                                photo.setURL(imageLink);
+                                Log.d("Url", "Url" + imageLink);
+                                photo.LoadImageFromWebOperations();
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
