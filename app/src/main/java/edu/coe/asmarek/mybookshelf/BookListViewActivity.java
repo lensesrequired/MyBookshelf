@@ -1,5 +1,7 @@
 package edu.coe.asmarek.mybookshelf;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,7 +31,7 @@ import java.util.Comparator;
  * Created by Anna on 3/18/17.
  */
 
-public class BookListViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class BookListViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, AdapterView.OnItemLongClickListener {
 
     private ListView list;
     private ArrayList<Book> books;
@@ -111,6 +114,7 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
         list.setAdapter(bookAdapter);
 
         list.setOnItemClickListener(this);
+        list.setOnItemLongClickListener(this);
     }
 
     @Override
@@ -179,5 +183,26 @@ public class BookListViewActivity extends AppCompatActivity implements AdapterVi
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Share")
+                .setMessage("Share this book?")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton("Share", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        
+                    }
+                })
+                .show();
+        return true;
     }
 }

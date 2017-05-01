@@ -57,6 +57,9 @@ public class AddBookText extends AppCompatActivity implements View.OnClickListen
         editBookID = getIntent().getIntExtra("bookID", -1);
         shelves = new ArrayList<String>(Arrays.asList("MyShelf", "Wishlist", "Loans"));
 
+        photo.setURL("http://images.clipartpanda.com/book-cover-clip-art-book-cover-clip-art-235x300.png");
+        photo.LoadImageFromWebOperations();
+
         if(editBookID != -1)
         {
             Book b = db.getBook(editBookID);
@@ -182,7 +185,6 @@ public class AddBookText extends AppCompatActivity implements View.OnClickListen
                                 JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
                                 String imageLink = imageLinks.getString("smallThumbnail");
                                 photo.setURL(imageLink);
-                                Log.d("Url", "Url" + imageLink);
                                 photo.LoadImageFromWebOperations();
 
                             } catch (JSONException e) {
